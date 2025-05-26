@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 10px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3em;
+  margin-bottom: 0.2em;
+}
+
+.github-link {
+  display: block;
+  margin-bottom: 1.5em;
+  font-size: 1.2em;
+  color: #222;
+  text-decoration: underline;
+}
+
+.form-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 2em;
+}
+
+.form-row input, .form-row button {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid #e9a6a6;
+}
+
+.form-row button {
+  background: #ffd6d6;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-row button:hover {
+  background: #ffb6b6;
+}
+
+#letters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2em;
+  margin-bottom: 2em;
+}
+
+.letter-group {
+  background: #ffc1c1;
+  border-radius: 8px;
+  padding: 10px 20px;
+  min-width: 120px;
+  margin-bottom: 1em;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.2em;
+  transition: background 0.2s;
+}
+
+.letter-group:hover {
+  background: #ffb6b6;
+}
+
+#contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-card {
+  background: #ffd6d6;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  width: 350px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact-info {
+  text-align: left;
+}
+
+.contact-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.1em;
+}
+
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  min-width: 320px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+} 
