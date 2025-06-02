@@ -1,4 +1,3 @@
-// Типы данных
 interface Contact {
   id: string;
   name: string;
@@ -10,7 +9,7 @@ const STORAGE_KEY = 'contactsList';
 
 function loadContacts(): Contact[] {
   const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) as Contact[] : [];
+  return data ? (JSON.parse(data) as Contact[]) : [];
 }
 
 function saveContacts(contacts: Contact[]): void {
@@ -20,10 +19,14 @@ function saveContacts(contacts: Contact[]): void {
 function validateContact({ name, vacancy, phone }: Partial<Contact>): string {
   const nameValid = /^[А-ЯA-Z][а-яa-z]{1,}/.test((name || '').trim());
   const vacancyValid = /^[А-ЯA-Z][а-яa-z]{1,}/.test((vacancy || '').trim());
-  const phoneValid = /^\+\d \d{3} \d{3} \d{2} \d{2}$/.test((phone || '').trim());
+  const phoneValid = /^\+\d \d{3} \d{3} \d{2} \d{2}$/.test(
+    (phone || '').trim()
+  );
   if (!name || !vacancy || !phone) return 'Все поля обязательны!';
-  if (!nameValid) return 'Имя должно начинаться с буквы и быть не короче 2 символов';
-  if (!vacancyValid) return 'Должность должна начинаться с буквы и быть не короче 2 символов';
+  if (!nameValid)
+    return 'Имя должно начинаться с буквы и быть не короче 2 символов';
+  if (!vacancyValid)
+    return 'Должность должна начинаться с буквы и быть не короче 2 символов';
   if (!phoneValid) return 'Телефон должен быть в формате +X XXX XXX XX XX';
   return '';
 }
@@ -33,13 +36,21 @@ function uuid(): string {
 }
 
 const nameInput = document.getElementById('name') as HTMLInputElement | null;
-const vacancyInput = document.getElementById('vacancy') as HTMLInputElement | null;
+const vacancyInput = document.getElementById(
+  'vacancy'
+) as HTMLInputElement | null;
 const phoneInput = document.getElementById('phone') as HTMLInputElement | null;
 const addBtn = document.getElementById('addBtn') as HTMLButtonElement | null;
-const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement | null;
-const searchBtn = document.getElementById('searchBtn') as HTMLButtonElement | null;
+const clearBtn = document.getElementById(
+  'clearBtn'
+) as HTMLButtonElement | null;
+const searchBtn = document.getElementById(
+  'searchBtn'
+) as HTMLButtonElement | null;
 const lettersDiv = document.getElementById('letters') as HTMLDivElement | null;
-const contactsDiv = document.getElementById('contacts') as HTMLDivElement | null;
+const contactsDiv = document.getElementById(
+  'contacts'
+) as HTMLDivElement | null;
 const modal = document.getElementById('modal') as HTMLDivElement | null;
 
 let contacts: Contact[] = loadContacts();
@@ -48,14 +59,15 @@ let currentLetter: string | null = null;
 function renderLetters(): void {
   if (!lettersDiv) return;
   const groups: Record<string, Contact[]> = {};
-  contacts.forEach(c => {
+  contacts.forEach((c) => {
     const letter = c.name[0].toUpperCase();
     if (!groups[letter]) groups[letter] = [];
     groups[letter].push(c);
   });
-  const allLetters = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const allLetters =
+    'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   lettersDiv.innerHTML = '';
-  allLetters.forEach(letter => {
+  allLetters.forEach((letter) => {
     const count = groups[letter]?.length || 0;
     const el = document.createElement('div');
     el.className = 'letter-group';
@@ -73,12 +85,14 @@ function renderContacts(): void {
   if (!contactsDiv) return;
   contactsDiv.innerHTML = '';
   if (!currentLetter) return;
-  const filtered = contacts.filter(c => c.name[0].toUpperCase() === currentLetter);
+  const filtered = contacts.filter(
+    (c) => c.name[0].toUpperCase() === currentLetter
+  );
   if (!filtered.length) {
     contactsDiv.innerHTML = '<div>Нет контактов для этой буквы</div>';
     return;
   }
-  filtered.forEach(contact => {
+  filtered.forEach((contact) => {
     const card = document.createElement('div');
     card.className = 'contact-card';
     card.innerHTML = `
@@ -98,12 +112,17 @@ function renderContacts(): void {
 
 if (addBtn && nameInput && vacancyInput && phoneInput) {
   addBtn.onclick = () => {
-    const name = typeof nameInput.value === 'string' ? nameInput.value.trim() : '';
-    const vacancy = typeof vacancyInput.value === 'string' ? vacancyInput.value.trim() : '';
-    const phone = typeof phoneInput.value === 'string' ? phoneInput.value.trim() : '';
+    const name =
+      typeof nameInput.value === 'string' ? nameInput.value.trim() : '';
+    const vacancy =
+      typeof vacancyInput.value === 'string' ? vacancyInput.value.trim() : '';
+    const phone =
+      typeof phoneInput.value === 'string' ? phoneInput.value.trim() : '';
     const error = validateContact({ name, vacancy, phone });
     if (error) {
-      showModal(`<div>${error}</div><button onclick=\"closeModal()\">OK</button>`);
+      showModal(
+        `<div>${error}</div><button onclick=\"closeModal()\">OK</button>`
+      );
       return;
     }
     contacts.push({ id: uuid(), name, vacancy, phone });
@@ -126,14 +145,14 @@ if (contactsDiv) {
 }
 
 function deleteContact(id: string): void {
-  contacts = contacts.filter(c => c.id !== id);
+  contacts = contacts.filter((c) => c.id !== id);
   saveContacts(contacts);
   renderLetters();
   renderContacts();
 }
 
 function editContact(id: string): void {
-  const contact = contacts.find(c => c.id === id);
+  const contact = contacts.find((c) => c.id === id);
   if (!contact) return;
   showModal(`
     <div class="modal-content">
@@ -146,7 +165,9 @@ function editContact(id: string): void {
     </div>
   `);
   setTimeout(() => {
-    const saveBtn = document.getElementById('saveEditBtn') as HTMLButtonElement | null;
+    const saveBtn = document.getElementById(
+      'saveEditBtn'
+    ) as HTMLButtonElement | null;
     if (saveBtn) saveBtn.onclick = () => saveEdit(id);
   }, 0);
 }
@@ -155,15 +176,28 @@ function saveEdit(id: string): void {
   const nameEl = document.getElementById('editName');
   const vacancyEl = document.getElementById('editVacancy');
   const phoneEl = document.getElementById('editPhone');
-  const name = nameEl && 'value' in nameEl ? (nameEl as HTMLInputElement).value.trim() : '';
-  const vacancy = vacancyEl && 'value' in vacancyEl ? (vacancyEl as HTMLInputElement).value.trim() : '';
-  const phone = phoneEl && 'value' in phoneEl ? (phoneEl as HTMLInputElement).value.trim() : '';
+  const name =
+    nameEl && 'value' in nameEl
+      ? (nameEl as HTMLInputElement).value.trim()
+      : '';
+  const vacancy =
+    vacancyEl && 'value' in vacancyEl
+      ? (vacancyEl as HTMLInputElement).value.trim()
+      : '';
+  const phone =
+    phoneEl && 'value' in phoneEl
+      ? (phoneEl as HTMLInputElement).value.trim()
+      : '';
   const error = validateContact({ name, vacancy, phone });
   if (error) {
-    showModal(`<div>${error}</div><button onclick=\"closeModal()\">OK</button>`);
+    showModal(
+      `<div>${error}</div><button onclick=\"closeModal()\">OK</button>`
+    );
     return;
   }
-  contacts = contacts.map(c => c.id === id ? { ...c, name, vacancy, phone } : c);
+  contacts = contacts.map((contact) =>
+    contact.id === id ? { ...contact, name, vacancy, phone } : contact
+  );
   saveContacts(contacts);
   closeModal();
   renderLetters();
@@ -193,7 +227,9 @@ if (searchBtn) {
       </div>
     `);
     setTimeout(() => {
-      const searchInput = document.getElementById('searchInput') as HTMLInputElement | null;
+      const searchInput = document.getElementById(
+        'searchInput'
+      ) as HTMLInputElement | null;
       if (searchInput) searchInput.oninput = searchContacts;
     }, 0);
   };
@@ -201,23 +237,31 @@ if (searchBtn) {
 
 function searchContacts(): void {
   const searchInput = document.getElementById('searchInput');
-  const query = searchInput && 'value' in searchInput ? (searchInput as HTMLInputElement).value.trim().toLowerCase() : '';
-  const resultsDiv = document.getElementById('searchResults') as HTMLDivElement | null;
+  const query =
+    searchInput && 'value' in searchInput
+      ? (searchInput as HTMLInputElement).value.trim().toLowerCase()
+      : '';
+  const resultsDiv = document.getElementById(
+    'searchResults'
+  ) as HTMLDivElement | null;
   if (!resultsDiv) return;
   if (!query) {
     resultsDiv.innerHTML = '';
     return;
   }
-  const found = contacts.filter(c =>
-    c.name.toLowerCase().includes(query) ||
-    c.vacancy.toLowerCase().includes(query) ||
-    c.phone.toLowerCase().includes(query)
+  const found = contacts.filter(
+    (c) =>
+      c.name.toLowerCase().includes(query) ||
+      c.vacancy.toLowerCase().includes(query) ||
+      c.phone.toLowerCase().includes(query)
   );
   if (!found.length) {
     resultsDiv.innerHTML = '<div>Ничего не найдено</div>';
     return;
   }
-  resultsDiv.innerHTML = found.map(c => `
+  resultsDiv.innerHTML = found
+    .map(
+      (c) => `
     <div class="contact-card" style="margin: 10px auto;">
       <div class="contact-info">
         <div><b>${c.name}</b></div>
@@ -229,7 +273,9 @@ function searchContacts(): void {
         <button title="Удалить" data-delete="${c.id}">🗑️</button>
       </div>
     </div>
-  `).join('');
+  `
+    )
+    .join('');
 }
 
 function showModal(html: string): void {
@@ -244,5 +290,4 @@ function closeModal(): void {
   modal.innerHTML = '';
 }
 
-// Инициализация
-renderLetters(); 
+renderLetters();
